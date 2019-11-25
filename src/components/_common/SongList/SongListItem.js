@@ -1,20 +1,18 @@
 import React, { useState } from 'react'
+import { get } from 'lodash'
 import { FontAwesomeIcon as Icon } from '@fortawesome/react-fontawesome'
 import { Flex, Box } from '@grid'
 import colors from '@features/_ui/colors'
 import { convertSecondsToMinutes } from '@features/player/utilities'
+import { inject } from '@lib/store'
 
-import PlayerStore from '@features/player/store'
-
-export default function SongListItem({ track }) {
+export default inject('playerStore')(SongListItem)
+function SongListItem({ data, track, playerStore }) {
+  console.log('track', track)
   const [hover, setHover] = useState(false)
-
   if (track.previewUrl === null) {
     return null
   }
-
-  const playerStore = new PlayerStore()
-
   return (
     <Box
       width={1}
@@ -40,8 +38,7 @@ export default function SongListItem({ track }) {
               cursor: 'pointer',
             }}
             onClick={() => {
-              console.log('Play', track)
-              playerStore.play(track)
+              playerStore.play({ ...data, ...track })
             }}>
             <Icon
               icon={hover ? 'play' : 'music'}
@@ -65,7 +62,7 @@ export default function SongListItem({ track }) {
               {track.name}
             </Box>
             <Box width={1} css={{ fontSize: '0.9em', paddingTop: '10px' }}>
-              {track.artist} • {track.album}
+              {get(track, 'artists[0].name', '')} • {track.name}
             </Box>
           </Flex>
         </Box>

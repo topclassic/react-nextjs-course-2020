@@ -1,8 +1,10 @@
 import React from 'react'
+import { useRouter } from 'next/router'
 import { Flex, Box } from '@grid'
+import { Fetch } from '@lib/api'
 import { useMember } from '@lib/auth'
 import withPage from '@lib/page/withPage'
-
+import * as Playlist from '@features/playlist/services'
 import DetailPageHeader from '@components/_common/DetailPageHeader'
 import SongList from '@common/SongList'
 
@@ -48,22 +50,33 @@ PlaylistDetailPage.defaultProps = {
   },
 }
 
-function PlaylistDetailPage({ data }) {
+function PlaylistDetailPage(props) {
   const { token } = useMember()
+  const {
+    query: { id },
+  } = useRouter()
 
   if (token === null) {
     return null
   }
+  console.log('token', token)
 
   return (
-    <Flex flexWrap="wrap" css={{ padding: '60px 120px' }}>
-      <Box width={1 / 3}>
-        <DetailPageHeader data={data} />
-      </Box>
-      <Box width={2 / 3}>
-        <SongList tracks={data.tracks} />
-      </Box>
-    </Flex>
+    <Fetch service={() => Playlist.getPlaylistById(id, { token })}>
+      {({ data }) => {
+        console.log('datadatadata', data.tracks)
+        return (
+          <Flex flexWrap="wrap" css={{ padding: '60px 120px' }}>
+            <Box width={1 / 3}>
+              <DetailPageHeader data={data} />
+            </Box>
+            <Box width={2 / 3}>
+              <SongList data={data} tracks={data.tracks} />
+            </Box>
+          </Flex>
+        )
+      }}
+    </Fetch>
   )
 }
 

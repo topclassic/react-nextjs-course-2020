@@ -3,9 +3,11 @@ import { Box } from '@grid'
 import Link from '@link'
 
 export default function AlbumList({ albums }) {
+  const { albums: album } = albums
+  const { items } = album
   return (
     <Fragment>
-      {albums.map(album => (
+      {items.map(album => (
         <Box width={1 / 6} px={10} py={10} key={album.id}>
           <article>
             <Link route="album-detail" params={{ id: album.id }}>

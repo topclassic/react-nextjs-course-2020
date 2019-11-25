@@ -1,4 +1,7 @@
+import { observable, action } from 'mobx'
+
 export default class PlayerStore {
+  @observable
   nowPlaying = {
     playing: true,
     title: 'ไกลแค่ไหน คือ ใกล้',
@@ -8,15 +11,13 @@ export default class PlayerStore {
       'https://p.scdn.co/mp3-preview/f0521c21357ae522872b59cf4dd082ad65880fe8?cid=e4abb1ea8fdf4926a463960abd146fcb',
   }
 
+  @action
   play(track) {
-    const { previewUrl, name, artist, image } = track
-
+    const { previewUrl, name, artists, image } = track
     this.nowPlaying.playing = true
     this.nowPlaying.title = name
-    this.nowPlaying.subTitle = artist
+    this.nowPlaying.subTitle = artists[0].name
     this.nowPlaying.image = image
     this.nowPlaying.url = previewUrl
-
-    console.log('Now Playing:', this.nowPlaying.title)
   }
 }

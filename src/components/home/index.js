@@ -1,8 +1,10 @@
 import React from 'react'
 import { Flex, Box } from '@grid'
+import { Fetch } from '@lib/api'
 import { useMember } from '@lib/auth'
 import withPage from '@lib/page/withPage'
 import colors from '@features/_ui/colors'
+import * as Album from '@features/album/services'
 import AlbumList from './AlbumList'
 
 HomePage.defaultProps = {
@@ -39,7 +41,9 @@ function HomePage({ albums }) {
           New Releases
         </h1>
       </Box>
-      <AlbumList albums={albums} />
+      <Fetch service={() => Album.getNewReleases({ token, limit: 20 })}>
+        {({ data }) => <AlbumList albums={data} />}
+      </Fetch>
     </Flex>
   )
 }

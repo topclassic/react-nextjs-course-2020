@@ -1,8 +1,10 @@
 import React from 'react'
+import { useRouter } from 'next/router'
 import { Flex, Box } from '@grid'
+import { Fetch } from '@lib/api'
 import withPage from '@lib/page/withPage'
 import { useMember } from '@lib/auth'
-
+import * as Album from '@features/album/services'
 import DetailPageHeader from '@components/_common/DetailPageHeader'
 import SongList from '@common/SongList'
 
@@ -47,7 +49,10 @@ AlbumDetailPage.defaultProps = {
   },
 }
 
-function AlbumDetailPage({ data }) {
+function AlbumDetailPage(props) {
+  const {
+    query: { id },
+  } = useRouter()
   const { token } = useMember()
 
   if (token === null) {
@@ -55,14 +60,20 @@ function AlbumDetailPage({ data }) {
   }
 
   return (
-    <Flex flexWrap="wrap" css={{ padding: '60px 120px' }}>
-      <Box width={1 / 3}>
-        <DetailPageHeader data={data} />
-      </Box>
-      <Box width={2 / 3}>
-        <SongList tracks={data.tracks} />
-      </Box>
-    </Flex>
+    <Fetch service={() => Album.getAlbumById(id, { token })}>
+      {({ data }) => {
+        console.log('datadatadata', data.tracks)
+        return (
+          <Flex flexWrap="wrap" css={{ padding: '60px 120px' }}>
+            {console.log('result data', data)}
+            <Box width={1 / 3}>{<DetailPageHeader data={data} />}</Box>
+            <Box width={2 / 3}>
+              <SongList data={data} tracks={data.tracks} />
+            </Box>
+          </Flex>
+        )
+      }}
+    </Fetch>
   )
 }
 

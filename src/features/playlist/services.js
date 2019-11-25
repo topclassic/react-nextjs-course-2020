@@ -1,9 +1,14 @@
 import * as API from './repository'
+import { get } from 'lodash'
+import { detailTrackFormat } from '../../util/format'
 
-export function getPlaylistById(id, { token }) {
-  return API.getPlaylistById(id, { token })
+export async function getPlaylistById(id, { token }) {
+  const data = await API.getPlaylistById(id, { token })
+  const tracks = get(data, 'tracks.items', []).map(d => d.track)
+  return detailTrackFormat(data, tracks)
 }
 
-export function getMyPlaylist({ token }) {
-  return API.getMyPlaylist({ token })
+export async function getMyPlaylist({ token }) {
+  const result = await API.getMyPlaylist({ token })
+  return { items: result.items }
 }

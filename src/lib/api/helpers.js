@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { camelCase } from '../../util/format'
 
 const defaultTimeout = 10000
 
@@ -16,7 +17,7 @@ export function fetchAPI({
     },
     timeout,
     ...options,
-  }).then(({ data }) => data)
+  }).then(({ data }) => camelCase(data))
 }
 
 export function postAPI({
