@@ -39,7 +39,11 @@ function ControlPanel({ playerStore }) {
         <ButtonControl icon="step-backward" onClick={() => {}} />
       </Box>
       <Box>
-        <ButtonControl icon="play" circle={true} onClick={() => {}} />
+        <ButtonControl
+          icon="play"
+          circle={true}
+          onClick={() => console.log('play')}
+        />
       </Box>
       <Box>
         <ButtonControl icon="step-forward" onClick={() => {}} />

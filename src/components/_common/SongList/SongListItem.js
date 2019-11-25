@@ -8,7 +8,6 @@ import { inject } from '@lib/store'
 
 export default inject('playerStore')(SongListItem)
 function SongListItem({ data, track, playerStore }) {
-  console.log('track', track)
   const [hover, setHover] = useState(false)
   if (track.previewUrl === null) {
     return null

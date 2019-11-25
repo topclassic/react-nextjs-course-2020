@@ -62,7 +62,6 @@ function AlbumDetailPage(props) {
   return (
     <Fetch service={() => Album.getAlbumById(id, { token })}>
       {({ data }) => {
-        console.log('datadatadata', data.tracks)
         return (
           <Flex flexWrap="wrap" css={{ padding: '60px 120px' }}>
             {console.log('result data', data)}

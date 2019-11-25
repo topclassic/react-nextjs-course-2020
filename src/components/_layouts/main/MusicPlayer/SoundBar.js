@@ -57,7 +57,7 @@ function SoundBar(props) {
           <Box>
             <ButtonControl
               icon={volume.muted ? 'volume-mute' : 'volume-up'}
-              onClick={() => {}}
+              onClick={() => console.log('onClick sound')}
             />
           </Box>
           <Box

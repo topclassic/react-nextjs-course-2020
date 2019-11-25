@@ -59,12 +59,9 @@ function PlaylistDetailPage(props) {
   if (token === null) {
     return null
   }
-  console.log('token', token)
-
   return (
     <Fetch service={() => Playlist.getPlaylistById(id, { token })}>
       {({ data }) => {
-        console.log('datadatadata', data.tracks)
         return (
           <Flex flexWrap="wrap" css={{ padding: '60px 120px' }}>
             <Box width={1 / 3}>

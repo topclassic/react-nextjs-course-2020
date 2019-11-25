@@ -62,10 +62,10 @@ function ProgressBar(props) {
             max={1}
             step="any"
             value={progress}
-            onClick={() => {}}
-            onMouseDown={() => {}}
-            onChange={() => {}}
-            onMouseUp={() => {}}
+            onClick={() => console.log('onClick')}
+            onMouseDown={() => console.log('onMouseDown')}
+            onChange={() => console.log('onChange')}
+            onMouseUp={() => console.log('onMouseUp')}
           />
         </div>
       </Box>
