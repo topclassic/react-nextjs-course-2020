@@ -1,14 +1,10 @@
 import React from 'react'
 import { Flex, Box } from '@grid'
+import { inject } from '@lib/store'
 
-ProgressBar.defaultProps = {
-  timeElapsed: '0:00',
-  progress: 0.2,
-  duration: '0:30',
-}
-
-function ProgressBar(props) {
-  const { timeElapsed, progress, duration } = props
+function ProgressBar({ playerStore }) {
+  const { progressBar, player } = playerStore
+  const { timeElapsed, progress, duration, max } = progressBar
 
   return (
     <Flex
@@ -43,7 +39,7 @@ function ProgressBar(props) {
               },
             }}
             value={progress}
-            max={1}
+            max={max}
           />
           <input
             css={{
@@ -59,13 +55,15 @@ function ProgressBar(props) {
             }}
             type="range"
             min={0}
-            max={1}
+            max={max}
             step="any"
             value={progress}
-            onClick={() => console.log('onClick')}
-            onMouseDown={() => console.log('onMouseDown')}
-            onChange={() => console.log('onChange')}
-            onMouseUp={() => console.log('onMouseUp')}
+            onMouseDown={() => playerStore.isSeek(true)}
+            onChange={e => playerStore.onProgress(e.target.value)}
+            onMouseUp={e => {
+              playerStore.isSeek(false)
+              return player.seekTo(e.target.value)
+            }}
           />
         </div>
       </Box>
@@ -74,4 +72,4 @@ function ProgressBar(props) {
   )
 }
 
-export default ProgressBar
+export default inject('playerStore')(ProgressBar)

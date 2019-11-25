@@ -34,3 +34,9 @@ export const detailTrackFormat = (data, track) => {
       : `${tracks.length} song`,
   }
 }
+
+export const durationPlayList = data => {
+  const secToMin = data / 100
+  const arr = secToMin.toString().split('.')
+  return `${arr[0]}:${arr[1].charAt(0)}${arr[1].charAt(1)}`
+}

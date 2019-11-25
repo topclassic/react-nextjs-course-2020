@@ -3,12 +3,56 @@ import { observable, action } from 'mobx'
 export default class PlayerStore {
   @observable
   nowPlaying = {
-    playing: true,
-    title: 'ไกลแค่ไหน คือ ใกล้',
-    subTitle: 'Getsunova',
-    image: 'https://i.scdn.co/image/ab67616d0000b273e76e64aa449965dd5e439c53',
-    url:
-      'https://p.scdn.co/mp3-preview/f0521c21357ae522872b59cf4dd082ad65880fe8?cid=e4abb1ea8fdf4926a463960abd146fcb',
+    playing: false,
+    title: '',
+    subTitle: '',
+    image: '',
+    url: '',
+  }
+
+  @observable
+  progressBar = {
+    timeElapsed: '0:00',
+    progress: 0,
+    duration: '0:30',
+    max: 1,
+  }
+
+  @observable
+  seek = false
+
+  @observable
+  player = {
+    seekTo: () => {},
+  }
+
+  @action
+  isSeek(bool) {
+    this.seek = bool
+  }
+
+  @action
+  onProgress(progress) {
+    const fixbux = progress.split('.')
+    console.log('fixbux', fixbux)
+    let fix = progress
+    if (fixbux.length > 1 && fixbux[0] === '0') fix = 1
+    this.progressBar.progress = fix
+  }
+
+  @action
+  tabProgress(data) {
+    const { progress, duration, max } = data
+    if (!this.seek) {
+      this.progressBar.max = max
+      this.progressBar.progress = progress
+      this.progressBar.duration = duration
+    }
+  }
+
+  @action
+  ref(data) {
+    this.player = data
   }
 
   @action
@@ -19,5 +63,10 @@ export default class PlayerStore {
     this.nowPlaying.subTitle = artists[0].name
     this.nowPlaying.image = image
     this.nowPlaying.url = previewUrl
+  }
+
+  @action
+  pressButton() {
+    this.nowPlaying.playing = !this.nowPlaying.playing
   }
 }
