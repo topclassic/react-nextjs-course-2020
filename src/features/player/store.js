@@ -17,6 +17,11 @@ export default class PlayerStore {
   }
 
   @observable
+  controlPanel = {
+    redo: false,
+  }
+
+  @observable
   queueTracks = []
 
   @observable
@@ -36,8 +41,18 @@ export default class PlayerStore {
   }
 
   @action
-  pressAddQueueTracks(data) {
-    this.queueTracks = data
+  pressRedoButton() {
+    this.controlPanel.redo = !this.controlPanel.redo
+  }
+
+  @action
+  addQueueTracks(data) {
+    this.queueTracks = [data]
+  }
+
+  @action
+  multiQueueTracks(data) {
+    this.queueTracks.push(data)
   }
 
   @action
@@ -67,7 +82,7 @@ export default class PlayerStore {
   tabProgress(data) {
     const { progress, duration, max, timeElapsed } = data
     if (!this.seek) {
-      this.progressBar.max = max
+      this.progressBar.max = parseInt(max)
       this.progressBar.progress = progress
       this.progressBar.duration = duration
       this.progressBar.timeElapsed = timeElapsed
