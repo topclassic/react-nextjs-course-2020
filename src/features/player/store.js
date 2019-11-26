@@ -38,7 +38,9 @@ export default class PlayerStore {
   }
 
   @action
-  onVolume(data) {}
+  onVolume(data) {
+    this.volume.level = data
+  }
 
   @action
   isSeek(bool) {

@@ -102,7 +102,7 @@ function SoundBar({ playerStore }) {
                 value={volume.level}
                 onClick={() => {}}
                 onMouseDown={() => {}}
-                onChange={() => {}}
+                onChange={e => playerStore.onVolume(parseFloat(e.target.value))}
                 onMouseUp={() => {}}
               />
             </div>
