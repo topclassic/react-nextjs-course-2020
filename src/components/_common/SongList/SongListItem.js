@@ -7,6 +7,7 @@ import { convertSecondsToMinutes } from '@features/player/utilities'
 import { inject } from '@lib/store'
 
 function SongListItem({ queue, data, track, playerStore }) {
+  console.log('data track', data)
   const { nowPlaying } = playerStore
   const { url, playing } = nowPlaying
   const [hover, setHover] = useState(false)

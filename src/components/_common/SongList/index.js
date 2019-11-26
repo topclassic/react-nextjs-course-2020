@@ -2,7 +2,8 @@ import React from 'react'
 import { Flex } from '@grid'
 import SongListItem from './SongListItem'
 
-export default function SongList({ queue, data, tracks }) {
+export default function SongList({ queue, data }) {
+  const { tracks } = data
   return (
     <Flex
       flexWrap="wrap"

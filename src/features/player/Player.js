@@ -32,7 +32,7 @@ function Player({ playerStore }) {
           progress: playedSeconds,
           timeElapsed: durationPlayList(playedSeconds),
         }
-        return playerStore.tabProgress(result)
+        playerStore.tabProgress(result)
       }}
       onEnded={() => {
         const nowPlay = queueTracks.findIndex(d => d.previewUrl === url)
