@@ -44,3 +44,5 @@ export const durationPlayList = totalSeconds => {
 
   return `${addLeadingZero(minutes)}:${addLeadingZero(seconds)}`
 }
+
+export const randomShuffle = totalSeconds => {}

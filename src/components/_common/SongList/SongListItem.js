@@ -7,7 +7,22 @@ import { convertSecondsToMinutes } from '@features/player/utilities'
 import { inject } from '@lib/store'
 
 function SongListItem({ queue, data, track, playerStore }) {
+  const { nowPlaying } = playerStore
+  const { url, playing } = nowPlaying
   const [hover, setHover] = useState(false)
+  const isPlay = url === track.previewUrl
+
+  function playButton(hover) {
+    let icon = 'music'
+    if (hover) {
+      if (isPlay) {
+        return !playing ? (icon = 'play') : (icon = 'pause')
+      }
+      icon = 'play'
+    }
+    return icon
+  }
+
   if (track.previewUrl === null) {
     return null
   }
@@ -38,10 +53,12 @@ function SongListItem({ queue, data, track, playerStore }) {
             }}
             onClick={() => {
               !queue && playerStore.addQueueTracks(track)
-              playerStore.play({ ...data, ...track })
+              isPlay
+                ? playerStore.pressButton()
+                : playerStore.play({ ...data, ...track })
             }}>
             <Icon
-              icon={hover ? 'play' : 'music'}
+              icon={playButton(hover)}
               css={{
                 color: colors.link,
               }}
@@ -58,7 +75,11 @@ function SongListItem({ queue, data, track, playerStore }) {
             css={{
               padding: '0px 20px 0px 0px',
             }}>
-            <Box width={1} css={{ color: colors.link }}>
+            <Box
+              width={1}
+              css={{
+                color: isPlay ? colors.primary : colors.link,
+              }}>
               {track.name}
             </Box>
             <Box width={1} css={{ fontSize: '0.9em', paddingTop: '10px' }}>

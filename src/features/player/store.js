@@ -113,6 +113,7 @@ export default class PlayerStore {
 
   @action
   pressButton() {
+    console.log('pressButton')
     this.nowPlaying.playing = !this.nowPlaying.playing
   }
 }
