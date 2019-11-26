@@ -1,0 +1,17 @@
+{
+  "eslint.autoFixOnSave": true,
+  "files.exclude": {
+    ".editorconfig": true,
+    ".eslintrc.json": true,
+    ".vscode": true,
+    "jsconfig.json": true,
+    "node_modules": true,
+    "src/.next": true
+  },
+  "search.exclude": {
+    ".vscode": true,
+    "docusaurus": true,
+    "node_modules": true,
+    "src/.next": true
+  }
+}
