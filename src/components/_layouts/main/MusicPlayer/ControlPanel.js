@@ -31,15 +31,29 @@ function ButtonControl({ icon, circle = false, active = false, onClick }) {
 }
 
 function ControlPanel({ playerStore }) {
-  const { controlPanel } = playerStore
-  const { redo } = controlPanel
+  const { controlPanel, nowPlaying, queueTracks } = playerStore
+  const { url } = nowPlaying
+  const { redo, shuffle } = controlPanel
   return (
     <Flex>
       <Box>
-        <ButtonControl icon="random" active={false} onClick={() => {}} />
+        <ButtonControl
+          icon="random"
+          active={shuffle}
+          onClick={() => {
+            playerStore.pressShuffleButton()
+          }}
+        />
       </Box>
       <Box>
-        <ButtonControl icon="step-backward" onClick={() => {}} />
+        <ButtonControl
+          icon="step-backward"
+          onClick={() => {
+            const nowPlay = queueTracks.findIndex(d => d.previewUrl === url)
+            const nextPlay = queueTracks[nowPlay - 1]
+            if (nextPlay) playerStore.play(nextPlay)
+          }}
+        />
       </Box>
       <Box>
         <ButtonControl
@@ -49,7 +63,14 @@ function ControlPanel({ playerStore }) {
         />
       </Box>
       <Box>
-        <ButtonControl icon="step-forward" onClick={() => {}} />
+        <ButtonControl
+          icon="step-forward"
+          onClick={() => {
+            const nowPlay = queueTracks.findIndex(d => d.previewUrl === url)
+            const nextPlay = queueTracks[nowPlay + 1]
+            if (nextPlay) playerStore.play(nextPlay)
+          }}
+        />
       </Box>
       <Box>
         <ButtonControl

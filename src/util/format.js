@@ -35,9 +35,12 @@ export const detailTrackFormat = (data, track) => {
   }
 }
 
-export const durationPlayList = data => {
-  if (!data) return '0:00'
-  const secToMin = data / 100
-  const arr = secToMin.toString().split('.')
-  return `${arr[0]}:${arr[1].charAt(0)}${arr[1].charAt(1)}`
+export const durationPlayList = totalSeconds => {
+  totalSeconds = Math.round(totalSeconds)
+  const minutes = Math.floor(totalSeconds / 60)
+  const seconds = totalSeconds % 60
+
+  const addLeadingZero = number => `${number <= 9 ? '0' : ''}${number}`
+
+  return `${addLeadingZero(minutes)}:${addLeadingZero(seconds)}`
 }

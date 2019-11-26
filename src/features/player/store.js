@@ -19,6 +19,7 @@ export default class PlayerStore {
   @observable
   controlPanel = {
     redo: false,
+    shuffle: false,
   }
 
   @observable
@@ -41,6 +42,11 @@ export default class PlayerStore {
   }
 
   @action
+  pressShuffleButton() {
+    this.controlPanel.shuffle = !this.controlPanel.shuffle
+  }
+
+  @action
   pressRedoButton() {
     this.controlPanel.redo = !this.controlPanel.redo
   }
@@ -52,7 +58,8 @@ export default class PlayerStore {
 
   @action
   multiQueueTracks(data) {
-    this.queueTracks.push(data)
+    const sameURL = this.queueTracks.find(d => d.previewUrl === data.previewUrl)
+    if (!sameURL) this.queueTracks.push(data)
   }
 
   @action
