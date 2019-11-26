@@ -7,12 +7,11 @@ import { convertSecondsToMinutes } from '@features/player/utilities'
 import { inject } from '@lib/store'
 
 function SongListItem({ queue, data, track, playerStore }) {
-  const { queueTracks } = playerStore
   const [hover, setHover] = useState(false)
   if (track.previewUrl === null) {
     return null
   }
-  console.log('queuequeue', queue)
+
   return (
     <Box
       width={1}
@@ -38,7 +37,7 @@ function SongListItem({ queue, data, track, playerStore }) {
               cursor: 'pointer',
             }}
             onClick={() => {
-              queue && playerStore.pressAddQueueTracks([track])
+              !queue && playerStore.addQueueTracks(track)
               playerStore.play({ ...data, ...track })
             }}>
             <Icon
@@ -81,9 +80,7 @@ function SongListItem({ queue, data, track, playerStore }) {
               height: '30px',
               cursor: 'pointer',
             }}
-            onClick={() =>
-              playerStore.pressAddQueueTracks([track, ...queueTracks])
-            }>
+            onClick={() => playerStore.multiQueueTracks(track)}>
             <Icon
               icon="plus-circle"
               css={{

@@ -1,17 +1,25 @@
-import React from 'react'
+import React, { useRef, useEffect } from 'react'
 import ReactPlayer from 'react-player'
 import { durationPlayList } from '../../util/format'
 import { inject } from '@lib/store'
 
 function Player({ playerStore }) {
-  const { nowPlaying, volume } = playerStore
+  const { nowPlaying, volume, controlPanel, queueTracks } = playerStore
   const { url, playing } = nowPlaying
   const { muted, level } = volume
+  const { redo } = controlPanel
+  const playRef = useRef(null)
+
+  useEffect(() => {
+    playerStore.ref(playRef.current)
+  })
+
   return (
     <ReactPlayer
-      ref={data => playerStore.ref(data)}
+      ref={playRef}
       css={{ display: 'none' }}
       playing={playing}
+      loop={redo}
       url={url}
       progressInterval={50}
       volume={level}
@@ -26,7 +34,11 @@ function Player({ playerStore }) {
         }
         return playerStore.tabProgress(result)
       }}
-      onEnded={() => {}}
+      onEnded={() => {
+        const nowPlay = queueTracks.findIndex(d => d.previewUrl === url)
+        const nextPlay = queueTracks[nowPlay + 1]
+        if (nextPlay) playerStore.play(nextPlay)
+      }}
     />
   )
 }

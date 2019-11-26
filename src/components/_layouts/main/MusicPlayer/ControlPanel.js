@@ -31,7 +31,8 @@ function ButtonControl({ icon, circle = false, active = false, onClick }) {
 }
 
 function ControlPanel({ playerStore }) {
-  console.log('playerStore')
+  const { controlPanel } = playerStore
+  const { redo } = controlPanel
   return (
     <Flex>
       <Box>
@@ -51,7 +52,11 @@ function ControlPanel({ playerStore }) {
         <ButtonControl icon="step-forward" onClick={() => {}} />
       </Box>
       <Box>
-        <ButtonControl icon="redo-alt" active={false} onClick={() => {}} />
+        <ButtonControl
+          icon="redo-alt"
+          active={redo}
+          onClick={() => playerStore.pressRedoButton()}
+        />
       </Box>
     </Flex>
   )

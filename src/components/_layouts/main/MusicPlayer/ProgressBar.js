@@ -5,7 +5,7 @@ import { inject } from '@lib/store'
 function ProgressBar({ playerStore }) {
   const { progressBar, player } = playerStore
   const { timeElapsed, progress, duration, max } = progressBar
-
+  console.log('progress', progress)
   return (
     <Flex
       justifyContent="space-between"
