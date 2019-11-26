@@ -6,11 +6,13 @@ import colors from '@features/_ui/colors'
 import { convertSecondsToMinutes } from '@features/player/utilities'
 import { inject } from '@lib/store'
 
-function SongListItem({ data, track, playerStore }) {
+function SongListItem({ queue, data, track, playerStore }) {
+  const { queueTracks } = playerStore
   const [hover, setHover] = useState(false)
   if (track.previewUrl === null) {
     return null
   }
+  console.log('queuequeue', queue)
   return (
     <Box
       width={1}
@@ -36,6 +38,7 @@ function SongListItem({ data, track, playerStore }) {
               cursor: 'pointer',
             }}
             onClick={() => {
+              queue && playerStore.pressAddQueueTracks([track])
               playerStore.play({ ...data, ...track })
             }}>
             <Icon
@@ -78,7 +81,9 @@ function SongListItem({ data, track, playerStore }) {
               height: '30px',
               cursor: 'pointer',
             }}
-            onClick={() => {}}>
+            onClick={() =>
+              playerStore.pressAddQueueTracks([track, ...queueTracks])
+            }>
             <Icon
               icon="plus-circle"
               css={{

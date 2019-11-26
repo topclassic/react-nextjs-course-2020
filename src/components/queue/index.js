@@ -1,6 +1,7 @@
 import React from 'react'
 import { Flex, Box } from '@grid'
 import { flowRight as compose } from 'lodash'
+import { inject } from '@lib/store'
 import { useMember } from '@lib/auth'
 import withPage from '@lib/page/withPage'
 import colors from '@features/_ui/colors'
@@ -39,7 +40,8 @@ QueuePage.defaultProps = {
   ],
 }
 
-function QueuePage({ tracks }) {
+function QueuePage({ playerStore }) {
+  const { queueTracks } = playerStore
   const { token } = useMember()
 
   if (token === null) {
@@ -59,10 +61,13 @@ function QueuePage({ tracks }) {
         </h1>
       </Box>
       <Box width={1}>
-        <SongList tracks={tracks} />
+        <SongList queue={true} tracks={queueTracks} />
       </Box>
     </Flex>
   )
 }
 
-export default compose(withPage({ restricted: true }))(QueuePage)
+export default compose(
+  withPage({ restricted: true }),
+  inject('playerStore'),
+)(QueuePage)

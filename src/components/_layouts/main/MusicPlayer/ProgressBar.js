@@ -62,7 +62,7 @@ function ProgressBar({ playerStore }) {
             onChange={e => playerStore.onProgress(e.target.value)}
             onMouseUp={e => {
               playerStore.isSeek(false)
-              return player.seekTo(e.target.value)
+              player.seekTo(e.target.value)
             }}
           />
         </div>

@@ -4,7 +4,7 @@ export default class PlayerStore {
   @observable
   volume = {
     muted: false,
-    level: 0.8,
+    level: 1,
   }
 
   @observable
@@ -15,6 +15,9 @@ export default class PlayerStore {
     image: '',
     url: '',
   }
+
+  @observable
+  queueTracks = []
 
   @observable
   progressBar = {
@@ -30,6 +33,11 @@ export default class PlayerStore {
   @observable
   player = {
     seekTo: () => {},
+  }
+
+  @action
+  pressAddQueueTracks(data) {
+    this.queueTracks = data
   }
 
   @action
