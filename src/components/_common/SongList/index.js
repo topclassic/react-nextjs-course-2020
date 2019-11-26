@@ -1,8 +1,14 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Flex } from '@grid'
 import SongListItem from './SongListItem'
+import { inject } from '@lib/store'
 
-export default function SongList({ queue, data, tracks }) {
+function SongList({ prefixTracks, playerStore, queue, data }) {
+  const { tracks } = data
+  useEffect(() => {
+    playerStore.multiListTracks(tracks)
+    playerStore.setPrefixTracks(prefixTracks)
+  }, [])
   return (
     <Flex
       flexWrap="wrap"
@@ -14,3 +20,9 @@ export default function SongList({ queue, data, tracks }) {
     </Flex>
   )
 }
+
+SongList.defaultProps = {
+  prefixTracks: 'listTracks',
+}
+
+export default inject('playerStore')(SongList)

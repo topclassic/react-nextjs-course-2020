@@ -29,7 +29,11 @@ function QueuePage({ playerStore }) {
         </h1>
       </Box>
       <Box width={1}>
-        <SongList queue={true} tracks={queueTracks} />
+        <SongList
+          prefixTracks={'queueTracks'}
+          queue={true}
+          data={{ tracks: queueTracks }}
+        />
       </Box>
     </Flex>
   )

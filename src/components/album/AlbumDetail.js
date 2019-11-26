@@ -64,10 +64,9 @@ function AlbumDetailPage(props) {
       {({ data }) => {
         return (
           <Flex flexWrap="wrap" css={{ padding: '60px 120px' }}>
-            {console.log('result data', data)}
             <Box width={1 / 3}>{<DetailPageHeader data={data} />}</Box>
             <Box width={2 / 3}>
-              <SongList data={data} tracks={data.tracks} />
+              <SongList data={data} />
             </Box>
           </Flex>
         )

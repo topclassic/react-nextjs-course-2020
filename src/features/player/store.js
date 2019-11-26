@@ -19,10 +19,19 @@ export default class PlayerStore {
   @observable
   controlPanel = {
     redo: false,
+    shuffle: false,
+    forward: true,
+    backward: true,
   }
 
   @observable
+  prefixTracks = ''
+
+  @observable
   queueTracks = []
+
+  @observable
+  listTracks = []
 
   @observable
   progressBar = {
@@ -41,18 +50,44 @@ export default class PlayerStore {
   }
 
   @action
+  setPrefixTracks(str) {
+    this.prefixTracks = str
+  }
+
+  @action
+  pressForwardButton(bool) {
+    this.controlPanel.forward = bool
+  }
+
+  @action
+  pressBackwardButton(bool) {
+    this.controlPanel.backward = bool
+  }
+
+  @action
+  pressShuffleButton() {
+    this.controlPanel.shuffle = !this.controlPanel.shuffle
+  }
+
+  @action
   pressRedoButton() {
     this.controlPanel.redo = !this.controlPanel.redo
   }
 
   @action
+  multiListTracks(data) {
+    this.listTracks = data
+  }
+
+  @action
   addQueueTracks(data) {
-    this.queueTracks = [data]
+    this.queueTracks = data
   }
 
   @action
   multiQueueTracks(data) {
-    this.queueTracks.push(data)
+    const sameURL = this.queueTracks.find(d => d.previewUrl === data.previewUrl)
+    if (!sameURL) this.queueTracks.push(data)
   }
 
   @action

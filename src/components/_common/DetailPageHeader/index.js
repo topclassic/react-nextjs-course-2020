@@ -2,8 +2,11 @@ import React from 'react'
 import { Flex, Box } from '@grid'
 import Button from '@common/Button'
 import colors from '@features/_ui/colors'
+import { inject } from '@lib/store'
 
-export default function DetailPageHeader({ data }) {
+function DetailPageHeader({ playerStore, data }) {
+  const { nowPlaying } = playerStore
+  const { playing } = nowPlaying
   return (
     <Flex flexWrap="wrap" css={{ padding: '20px 70px' }}>
       <Box width={1}>
@@ -23,7 +26,9 @@ export default function DetailPageHeader({ data }) {
             {data.subTitle}
           </p>
           <p>
-            <Button>Play</Button>
+            <Button onClick={() => playerStore.pressButton()}>
+              {!playing ? 'Play' : 'Pause'}
+            </Button>
           </p>
           <p css={{ paddingTop: '15px', fontSize: '0.7em' }}>
             {data.bottomLine}
@@ -33,3 +38,5 @@ export default function DetailPageHeader({ data }) {
     </Flex>
   )
 }
+
+export default inject('playerStore')(DetailPageHeader)
