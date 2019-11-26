@@ -6,7 +6,6 @@ import colors from '@features/_ui/colors'
 import { convertSecondsToMinutes } from '@features/player/utilities'
 import { inject } from '@lib/store'
 
-export default inject('playerStore')(SongListItem)
 function SongListItem({ data, track, playerStore }) {
   const [hover, setHover] = useState(false)
   if (track.previewUrl === null) {
@@ -99,3 +98,5 @@ function SongListItem({ data, track, playerStore }) {
     </Box>
   )
 }
+
+export default inject('playerStore')(SongListItem)

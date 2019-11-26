@@ -4,8 +4,9 @@ import { durationPlayList } from '../../util/format'
 import { inject } from '@lib/store'
 
 function Player({ playerStore }) {
-  const { nowPlaying } = playerStore
+  const { nowPlaying, volume } = playerStore
   const { url, playing } = nowPlaying
+  const { muted, level } = volume
   return (
     <ReactPlayer
       ref={data => playerStore.ref(data)}
@@ -13,14 +14,15 @@ function Player({ playerStore }) {
       playing={playing}
       url={url}
       progressInterval={50}
-      volume={0.8}
-      muted={false}
+      volume={level}
+      muted={muted}
       onProgress={data => {
         const { loadedSeconds, playedSeconds } = data
         const result = {
           max: loadedSeconds,
           duration: durationPlayList(loadedSeconds),
           progress: playedSeconds,
+          timeElapsed: durationPlayList(playedSeconds),
         }
         return playerStore.tabProgress(result)
       }}

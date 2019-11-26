@@ -2,6 +2,12 @@ import { observable, action } from 'mobx'
 
 export default class PlayerStore {
   @observable
+  volume = {
+    muted: false,
+    level: 0.8,
+  }
+
+  @observable
   nowPlaying = {
     playing: false,
     title: '',
@@ -27,6 +33,14 @@ export default class PlayerStore {
   }
 
   @action
+  pressButtonMuted() {
+    this.volume.muted = !this.volume.muted
+  }
+
+  @action
+  onVolume(data) {}
+
+  @action
   isSeek(bool) {
     this.seek = bool
   }
@@ -34,7 +48,6 @@ export default class PlayerStore {
   @action
   onProgress(progress) {
     const fixbux = progress.split('.')
-    console.log('fixbux', fixbux)
     let fix = progress
     if (fixbux.length > 1 && fixbux[0] === '0') fix = 1
     this.progressBar.progress = fix
@@ -42,11 +55,12 @@ export default class PlayerStore {
 
   @action
   tabProgress(data) {
-    const { progress, duration, max } = data
+    const { progress, duration, max, timeElapsed } = data
     if (!this.seek) {
       this.progressBar.max = max
       this.progressBar.progress = progress
       this.progressBar.duration = duration
+      this.progressBar.timeElapsed = timeElapsed
     }
   }
 

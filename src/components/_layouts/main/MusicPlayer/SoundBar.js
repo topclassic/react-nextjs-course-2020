@@ -1,6 +1,7 @@
 import React, { forwardRef } from 'react'
 import { FontAwesomeIcon as Icon } from '@fortawesome/react-fontawesome'
 import { Flex, Box } from '@grid'
+import { inject } from '@lib/store'
 import colors from '@features/_ui/colors'
 import Link from '@link'
 
@@ -33,15 +34,8 @@ const ButtonControl = forwardRef((props, forwardedRef) => {
   return <Button {...props} forwardedRef={forwardedRef} />
 })
 
-SoundBar.defaultProps = {
-  volume: {
-    muted: false,
-    level: 0.8,
-  },
-}
-
-function SoundBar(props) {
-  const { volume } = props
+function SoundBar({ playerStore }) {
+  const { volume } = playerStore
 
   return (
     <Flex justifyContent="flex-end">
@@ -57,7 +51,7 @@ function SoundBar(props) {
           <Box>
             <ButtonControl
               icon={volume.muted ? 'volume-mute' : 'volume-up'}
-              onClick={() => console.log('onClick sound')}
+              onClick={() => playerStore.pressButtonMuted()}
             />
           </Box>
           <Box
@@ -119,4 +113,4 @@ function SoundBar(props) {
   )
 }
 
-export default SoundBar
+export default inject('playerStore')(SoundBar)
