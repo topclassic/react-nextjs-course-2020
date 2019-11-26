@@ -1,10 +1,17 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Flex, Box } from '@grid'
 import { FontAwesomeIcon as Icon } from '@fortawesome/react-fontawesome'
 import colors from '@features/_ui/colors'
+import { add, minus } from '../../../../util/calculate'
 import { inject } from '@lib/store'
 
-function ButtonControl({ icon, circle = false, active = false, onClick }) {
+function ButtonControl({
+  step = false,
+  icon,
+  circle = false,
+  active = false,
+  onClick,
+}) {
   const css = {
     background: 'transparent',
     padding: '7px 8px 11px 10px',
@@ -19,21 +26,39 @@ function ButtonControl({ icon, circle = false, active = false, onClick }) {
 
   return (
     <button onClick={onClick} css={css}>
-      <Icon
-        icon={icon}
-        css={{
-          color: active ? 'green' : colors.link,
-          width: '10px',
-        }}
-      />
+      {step ? (
+        <Icon
+          icon={icon}
+          css={{
+            color: !active ? colors.gray : colors.link,
+            width: '10px',
+          }}
+        />
+      ) : (
+        <Icon
+          icon={icon}
+          css={{
+            color: active ? 'green' : colors.link,
+            width: '10px',
+          }}
+        />
+      )}
     </button>
   )
 }
 
 function ControlPanel({ playerStore }) {
-  const { controlPanel, nowPlaying, queueTracks } = playerStore
+  const { controlPanel, nowPlaying, prefixTracks } = playerStore
   const { url } = nowPlaying
-  const { redo, shuffle } = controlPanel
+  const { redo, shuffle, backward } = controlPanel
+
+  function Step(value, func) {
+    const nowPlay = playerStore[prefixTracks].findIndex(
+      d => d.previewUrl === url,
+    )
+    return playerStore[prefixTracks][func(nowPlay, value)]
+  }
+
   return (
     <Flex>
       <Box>
@@ -47,10 +72,11 @@ function ControlPanel({ playerStore }) {
       </Box>
       <Box>
         <ButtonControl
+          step={true}
+          active={backward}
           icon="step-backward"
           onClick={() => {
-            const nowPlay = queueTracks.findIndex(d => d.previewUrl === url)
-            const nextPlay = queueTracks[nowPlay - 1]
+            const nextPlay = Step(1, minus)
             if (nextPlay) playerStore.play(nextPlay)
           }}
         />
@@ -66,8 +92,7 @@ function ControlPanel({ playerStore }) {
         <ButtonControl
           icon="step-forward"
           onClick={() => {
-            const nowPlay = queueTracks.findIndex(d => d.previewUrl === url)
-            const nextPlay = queueTracks[nowPlay + 1]
+            const nextPlay = Step(1, add)
             if (nextPlay) playerStore.play(nextPlay)
           }}
         />
