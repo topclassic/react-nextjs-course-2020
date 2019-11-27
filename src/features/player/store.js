@@ -1,4 +1,5 @@
 import { observable, action } from 'mobx'
+import { shuffle, concat } from 'lodash'
 
 export default class PlayerStore {
   @observable
@@ -25,7 +26,13 @@ export default class PlayerStore {
   }
 
   @observable
+  oldPrefixTracks = ''
+
+  @observable
   prefixTracks = ''
+
+  @observable
+  shuffleTracks = []
 
   @observable
   queueTracks = []
@@ -47,6 +54,11 @@ export default class PlayerStore {
   @observable
   player = {
     seekTo: () => {},
+  }
+
+  @action
+  setOldPrefixTracks(str) {
+    this.oldPrefixTracks = str
   }
 
   @action
@@ -80,6 +92,28 @@ export default class PlayerStore {
   }
 
   @action
+  multiShuffleTracks(prefixTracks, url) {
+    if (this.controlPanel.shuffle) {
+      const data = this[prefixTracks]
+      if (data !== undefined) {
+        const nowPlay = data.find(d => d.previewUrl === url)
+        if (nowPlay) {
+          const notNowPlay = data.filter(
+            d => d.previewUrl !== nowPlay.previewUrl,
+          )
+          this.oldPrefixTracks = prefixTracks
+          const arrRandom = shuffle(notNowPlay)
+          const mergArr = concat(nowPlay, arrRandom)
+          this.shuffleTracks = mergArr
+          this.prefixTracks = 'shuffleTracks'
+        }
+      }
+    } else {
+      this.prefixTracks = this.oldPrefixTracks
+    }
+  }
+
+  @action
   addQueueTracks(data) {
     this.queueTracks = data
   }
@@ -107,10 +141,7 @@ export default class PlayerStore {
 
   @action
   onProgress(progress) {
-    const fixbux = progress.split('.')
-    let fix = progress
-    if (fixbux.length > 1 && fixbux[0] === '0') fix = 1
-    this.progressBar.progress = fix
+    this.progressBar.progress = progress
   }
 
   @action
@@ -132,6 +163,18 @@ export default class PlayerStore {
   @action
   play(track) {
     const { previewUrl, name, artists, image } = track
+    this.nowPlaying.playing = true
+    this.nowPlaying.title = name
+    this.nowPlaying.subTitle = artists[0].name
+    this.nowPlaying.image = image
+    this.nowPlaying.url = previewUrl
+  }
+
+  @action
+  onEnd(url) {
+    const nowPlay = this[this.prefixTracks].findIndex(d => d.previewUrl === url)
+    const nextPlay = this[this.prefixTracks][nowPlay + 1]
+    const { previewUrl, name, artists, image } = nextPlay
     this.nowPlaying.playing = true
     this.nowPlaying.title = name
     this.nowPlaying.subTitle = artists[0].name
