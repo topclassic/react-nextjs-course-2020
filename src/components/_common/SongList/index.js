@@ -8,6 +8,7 @@ function SongList({ prefixTracks, playerStore, queue, data }) {
   useEffect(() => {
     playerStore.multiListTracks(tracks)
     playerStore.setPrefixTracks(prefixTracks)
+    playerStore.setOldPrefixTracks(prefixTracks)
   }, [])
   return (
     <Flex

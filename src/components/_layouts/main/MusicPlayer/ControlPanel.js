@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Flex, Box } from '@grid'
 import { FontAwesomeIcon as Icon } from '@fortawesome/react-fontawesome'
 import colors from '@features/_ui/colors'
@@ -67,6 +67,7 @@ function ControlPanel({ playerStore }) {
           active={shuffle}
           onClick={() => {
             playerStore.pressShuffleButton()
+            playerStore.multiShuffleTracks(prefixTracks, url)
           }}
         />
       </Box>

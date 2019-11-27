@@ -4,7 +4,7 @@ import { durationPlayList } from '../../util/format'
 import { inject } from '@lib/store'
 
 function Player({ playerStore }) {
-  const { nowPlaying, volume, controlPanel, queueTracks } = playerStore
+  const { nowPlaying, volume, controlPanel, prefixTracks } = playerStore
   const { url, playing } = nowPlaying
   const { muted, level } = volume
   const { redo } = controlPanel
@@ -35,8 +35,11 @@ function Player({ playerStore }) {
         playerStore.tabProgress(result)
       }}
       onEnded={() => {
-        const nowPlay = queueTracks.findIndex(d => d.previewUrl === url)
-        const nextPlay = queueTracks[nowPlay + 1]
+        console.log('prefixTracks', prefixTracks)
+        const nowPlay = playerStore[prefixTracks].findIndex(
+          d => d.previewUrl === url,
+        )
+        const nextPlay = playerStore[prefixTracks][nowPlay + 1]
         if (nextPlay) playerStore.play(nextPlay)
       }}
     />
