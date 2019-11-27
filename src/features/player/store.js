@@ -171,6 +171,18 @@ export default class PlayerStore {
   }
 
   @action
+  onEnd(url) {
+    const nowPlay = this[this.prefixTracks].findIndex(d => d.previewUrl === url)
+    const nextPlay = this[this.prefixTracks][nowPlay + 1]
+    const { previewUrl, name, artists, image } = nextPlay
+    this.nowPlaying.playing = true
+    this.nowPlaying.title = name
+    this.nowPlaying.subTitle = artists[0].name
+    this.nowPlaying.image = image
+    this.nowPlaying.url = previewUrl
+  }
+
+  @action
   pressButton() {
     this.nowPlaying.playing = !this.nowPlaying.playing
   }
